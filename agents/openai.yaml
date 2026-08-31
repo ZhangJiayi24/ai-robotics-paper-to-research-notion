@@ -1,4 +1,9 @@
 interface:
-  display_name: "AI Robotics Paper2Notion"
+  display_name: "AI Robotics Paper2Zotero"
   short_description: "中文精读、结构化详译并沉淀 AI Robotics 论文"
-  default_prompt: "使用 $ai-robotics-paper-to-research-notion 精读这篇论文，并在需要时写入 Notion。"
+  default_prompt: "使用 $ai-robotics-paper-to-research-zotero 精读这篇论文，生成完整中文 Research Memo PDF，并在需要时通过 Zotero MCP 入库。"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "zotero"
+      description: "A Zotero MCP server with library search, item/PDF reading, metadata/tag updates, and local PDF attachment import"

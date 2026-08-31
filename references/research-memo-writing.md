@@ -251,6 +251,40 @@ failure source → why it happens → whether paper solves it → possible fix
 
 ---
 
+## 12. PDF 生成与公式排版
+
+入库模式将完整 Research Memo 和中文结构化详译写成语义化 HTML/CSS，默认使用 WeasyPrint 生成真实 PDF。只在可复现的 WeasyPrint 失败后才使用 browser-print fallback，并在完成汇报中说明。
+
+- 使用实际 CJK 字体的 regular 与 bold 文件，优先 Noto Sans CJK SC / Noto Sans SC；使用 `@font-face` 显式映射 400 和 700。
+- 重要粗体不依赖未定义的 600 / 650 中间字重。
+- 公式中的上下标使用 `<sup>` / `<sub>`，不使用 `ᵢ`、`₁`、`ₖ`、`ᵛ`、`ⁱ` 等 Unicode 近似字符。
+- `λ`、`φ` 等使用普通希腊字母，索引单独放入 `<sub>`。数学变量可使用 `<i>`，但 equation container 保持同一嵌入 Noto 字体，避免希腊字母 fallback 乱码。
+- preformatted pipeline 中使用 `x[i+1]` 这类 ASCII 索引，因为其中的 HTML 上下标不会被解析。
+- 长公式在有意义的运算符处换行，并在 CSS 中显式设置上下标尺寸和垂直对齐。
+
+### Zotero 透明图兼容
+
+PDF image soft mask 是标准透明实现，本身不等于 Zotero 不兼容。已验证的故障来自“含透明分组的矢量 PDF → SVG → WeasyPrint”：转换后的 SVG 会包含错误的 mask / 重叠 image layer，黑色像素在最终 PDF 生成前已经出现。处理规则：
+
+1. 对矢量 PDF 素材先运行 `pdfimages -list <figure.pdf>`；如果出现 `smask` 或 `mask`，不要转换为 SVG；
+2. 只把这张目标图渲染为 400–600 DPI RGBA PNG 并保留 alpha，例如 `pdftocairo -png -singlefile -r 450 -transp <figure.pdf> <output-prefix>`；
+3. 将 RGBA PNG 作为普通 `<img>` 交给同一个 WeasyPrint renderer。不要铺白底，也不要在最终 PDF 中全局删除 `/SMask`；
+4. 最终用 Poppler 全页渲染和当前 Zotero/PDF.js 实际显示进行视觉检查。允许 `pdfimages -list` 出现与该 RGBA 图对应的合法 `smask`；验收依据是透明区域、边缘和背景合成正确，而不是 `smask` 数量为零。
+
+不要用 Ghostscript PDF 1.3、整页截图或 PDF 局部覆盖来规避透明度问题；这些方案会破坏搜索、复制、批注或版面一致性。普通无透明矢量 PDF 和来源可靠的原始 SVG 仍保留矢量路径，不受本规则影响。
+
+例如：
+
+```html
+<div class="equation">
+  <i>j</i><sub>k</sub> = (<i>i</i> + 1) + 1 + (<i>k</i> - 1)<i>s</i>,
+  <i>K</i> = 4, <i>s</i> = 2;<br>
+  <i>L</i> = <i>L</i><sub>video</sub>
+  + λ<sub>a</sub><i>L</i><sub>action</sub>
+  + λ<sub>ifp</sub><i>L</i><sub>ifp</sub>
+</div>
+```
+
 ---
 
 ## 13. 写作风格

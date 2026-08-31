@@ -8,7 +8,7 @@
 4. 忠实度规则
 5. 图表、公式与附录
 6. 压缩规则
-7. Notion 排版
+7. PDF 排版
 8. 完成前核对
 
 ## 1. 目标与边界
@@ -22,7 +22,7 @@
 
 ## 2. 默认覆盖范围
 
-对 `paper2notion / 精读入库 / 写入 Notion`，默认覆盖：
+对 `paper2zotero / 精读入库 / 写入 Zotero`，默认覆盖：
 
 1. Abstract；
 2. Introduction；
@@ -36,7 +36,7 @@
 
 ### 原主流程的实施要求
 
-对于“paper2notion / 精读入库 / 写入 Notion”或用户明确要求中文翻译的任务，在 Research Memo 后追加中文结构化详译。
+对于“paper2zotero / 精读入库 / 写入 Zotero”或用户明确要求中文翻译的任务，在 Research Memo 后追加中文结构化详译。
 
 像 Masked Visual Actions 示例那样，详译应做到：
 
@@ -144,12 +144,12 @@
 - 失败判定规则；
 - 负结果、偏差、限制和未完成的开源承诺。
 
-## 7. Notion 排版
+## 7. PDF 排版
 
-- Research Memo 与详译使用两个一级标题，顺序固定为：`中文 Research Memo` → `中文结构化详译`。
-- 详译较长时，按原文章节使用二级/三级标题；可使用 toggle 折叠章节，但不要把整篇塞进一个 toggle。
+- Research Memo 与详译在同一个独立 PDF 中使用两个一级标题，顺序固定为：`中文 Research Memo` → `中文结构化详译`。
+- 详译较长时，按原文章节使用二级/三级标题，不为了压缩页数而删除原主流程要求的细节。
 - 图随文走；不建立孤立的“图片仓库”小节。
-- 同一视觉材料只上传一次，其他位置用文字交叉引用，避免页面膨胀。
+- 同一视觉材料只嵌入一次，其他位置用文字交叉引用，避免 PDF 膨胀。
 - Source anchors 使用 `Paper §3.2`、`Paper Fig. 4`、`Paper Table 2`、`Appendix E` 等人类可读格式。
 
 ## 8. 完成前核对

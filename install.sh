@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-readonly AI_ROBOTICS_SKILL_NAME="ai-robotics-paper-to-research-notion"
-readonly AI_ROBOTICS_DEFAULT_REPO="ZhangJiayi24/ai-robotics-paper-to-research-notion"
+readonly AI_ROBOTICS_SKILL_NAME="ai-robotics-paper-to-research-zotero"
+readonly AI_ROBOTICS_DEFAULT_REPO="MicroGrey/ai-robotics-paper-to-research-zotero"
 readonly AI_ROBOTICS_REPO_SLUG="${AI_ROBOTICS_SKILL_REPO:-${AI_ROBOTICS_DEFAULT_REPO}}"
 readonly AI_ROBOTICS_REPO_REF="${AI_ROBOTICS_SKILL_REF:-main}"
 readonly AI_ROBOTICS_SKILLS_ROOT="${CODEX_SKILLS_DIR:-${HOME}/.agents/skills}"
@@ -84,5 +84,5 @@ ai_robotics_stage_dir=""
 
 echo "Installed ${AI_ROBOTICS_SKILL_NAME} to ${AI_ROBOTICS_TARGET_DIR}"
 echo "If Codex is already open and the skill does not appear, restart Codex."
-echo "First-time Notion setup prompt:"
-echo '  paper2notion 初始化'
+echo "First-time Zotero MCP check prompt:"
+echo '  paper2zotero 初始化'
