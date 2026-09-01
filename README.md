@@ -2,16 +2,16 @@
 
 一套给 Codex 使用的 AI Robotics / Embodied AI / Robot Learning 论文精读工作流。它会把论文 PDF、project page、GitHub 与关键视觉证据整理成中文 Research Memo；在用户要求入库时，还会生成按原文章节组织的中文结构化详译，两者合并为独立 PDF，再通过 Zotero MCP 附加到论文条目。
 
-核心笔记方法来自上游 `paper2notion-cn-v1.2.0`。这个 private fork 只把 Notion 持久化映射替换为 Zotero parent item + PDF attachment + 高质量 idea child notes，并保留上游的精读、结构化详译、视觉证据和 Research Map 要求。
+核心笔记方法来自上游 `paper2notion-cn-v1.2.0`。这个公开的 Zotero fork 只把 Notion 持久化映射替换为 Zotero parent item + PDF attachment + 高质量 idea child notes，并保留上游的精读、结构化详译、视觉证据和 Research Map 要求。
 
 ## 安装
 
 前提：已经安装 Codex 和 Zotero 桌面端。仓库不保存 Zotero MCP 的端口、服务地址、library ID、storage 路径或其他机器相关配置；安装 skill 后通过 `paper2zotero 初始化` 完成连接发现和能力检查。
 
-private 仓库使用 GitHub SSH 认证克隆后本地安装：
+公开仓库可以直接通过 HTTPS 克隆并本地安装：
 
 ```bash
-git clone git@github.com:MicroGrey/ai-robotics-paper-to-research-zotero.git
+git clone --branch feature/zotero-backend https://github.com/MicroGrey/ai-robotics-paper-to-research-notion.git ai-robotics-paper-to-research-zotero
 cd ai-robotics-paper-to-research-zotero
 bash install.sh
 ```
@@ -186,7 +186,7 @@ paper2zotero 当前版本
 CODEX_SKILLS_DIR=/your/skills/path bash install.sh
 ```
 
-对 private fork，优先使用已配置的 SSH 认证 clone，再执行本地 `install.sh`。
+公开仓库推荐使用 HTTPS clone；已经配置 GitHub SSH 认证时也可以改用 SSH 地址，再执行本地 `install.sh`。
 
 ## 隐私与边界
 
