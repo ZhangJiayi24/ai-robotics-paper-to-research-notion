@@ -53,7 +53,19 @@
 
 不要因为原始图需要截图、裁切、定位或从网页 demo 中选帧，就直接跳到自绘图。先完成 paper 与 project webpage 的视觉材料检索，再决定是否需要生成图。
 
-默认覆盖数量：普通论文使用 2–4 个关键视觉材料；robotics system、demo-rich project 或视觉证据较多的论文使用 4–8 个。数量不是硬凑图指标，但少于 2 个时，必须在完成汇报中说明原因，例如原文确实无可用图、用户提供的是无图转存 PDF、项目页不可访问或图片无法可靠提取。
+选定图后只获取这些素材，不批量下载整个 project page 或提取论文里的每一张图。质量顺序是：
+
+1. 原始 SVG、矢量 PDF 或官方仓库中的矢量资产；
+2. project page / README 的最大 `srcset` 或原始栅格图；
+3. 从 PDF 直接提取的嵌入图像；
+4. 直接对目标区域做矢量保真的 PDF/SVG 裁取；
+5. 只在上述方法不可靠时，对目标区域做紧裁的 400–600 DPI RGB 栅格裁取。
+
+原始 SVG 和透明 PNG 可以继续作为高质量输入。矢量 PDF 如果包含 `smask` / `mask`，不要先转成 SVG；这条转换路径可能把 PDF transparency group 拆成错误的重叠图层。只将目标图以 400–600 DPI 渲染为保留 alpha 的 RGBA PNG，再交给 WeasyPrint。不要铺白底、清除 alpha、栅格化整页或栅格化整份 memo。
+
+不默认先以低/中 DPI 渲染整页 PDF，再放大其中一小块。不对低分辨率裁图伪上采样。表格优先使用矢量裁取或核对数值后重排的 HTML table；重排时标注 `根据 Paper Table X 重排`。
+
+默认覆盖数量：普通论文使用 2–4 个关键视觉材料；中心论文至少 3 个；robotics system、demo-rich project 或视觉证据较多的论文通常使用 4–8 个。数量不是硬凑图指标，但少于 2 个时，必须在完成汇报中说明原因，例如原文确实无可用图、用户提供的是无图转存 PDF、项目页不可访问或图片无法可靠提取。
 
 ### 5.2 图随文走
 
@@ -93,6 +105,13 @@
 - 用自绘图但不标注“自绘示意图，非论文原图”。
 
 可以使用的图包括：teaser / overview figure、method / pipeline figure、core mechanism figure、qualitative result figure、main result table、ablation plot、real robot setup、failure case、project page demo sequence、自绘 pipeline schematic、自绘 research mapping diagram。
+
+### 5.3 临时文件
+
+- 优先就地读取 Zotero 中的原论文 PDF，不为提图再保存一份永久副本。
+- 下载、裁取、SVG/PDF 中间件、栅格 fallback、HTML builder、页面渲染和 contact sheet 都放进 task-scoped 临时目录。
+- 只保留到最终 PDF 已生成、完整视觉检查、通过 Zotero MCP 导入且导入副本已验证。
+- 随后删除临时资产和 builder；默认只将最终 Research Memo PDF 作为持久本地产物，除非用户明确要求保留可编辑源文件。
 
 ---
 

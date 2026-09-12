@@ -17,9 +17,9 @@
 写论文笔记前，要从以下来源推断当前 research lens：
 
 1. 用户当前 prompt，尤其是“我关注的问题”；
-2. AI Robotics 想法库中的近期条目；
-3. AI Robotics 论文库中近期高优先级或最近编辑过的论文；
-4. Current Research Lens 页面，如果存在；
+2. Zotero 中近期 `Research Idea | ...` child notes；
+3. Zotero 中近期高优先级或最近精读的论文、Research Memo PDFs 和 tags；
+4. 用户明确提供的 Current Research Lens；
 5. AI Robotics mindmap，如果可见或可访问。
 
 常见 lens 包括：
@@ -86,7 +86,7 @@
 
 1. 这个概念在多篇近期高价值论文中反复出现；
 2. 它可以变成一个具体实验方向；
-3. 它和近期 idea-library entries 强相关；
+3. 它和近期 idea child notes 强相关；
 4. 它改变了用户对某个主要研究方向的理解；
 5. 它是可迁移研究问题，而不是某一篇论文的方法名。
 
@@ -98,7 +98,7 @@
 
 只创建高质量想法，不要强迫每篇论文都生成很多 idea。
 
-一个想法只有在至少满足以下条件之一时，才应写入 AI Robotics 想法库：
+一个想法只有在至少满足以下条件之一时，才应写成 Zotero `Research Idea | <title>` child note：
 
 1. 可以转化为具体实验；
 2. 和当前 research lens 强相关；
@@ -106,11 +106,11 @@
 4. 很快可以作为 baseline / ablation 使用；
 5. 是一个反复出现但未解决的研究问题。
 
-否则，把它作为 paper memo 里的短 note，不要污染 idea database。
+否则，把它作为 paper memo 里的短 note，不要污染 Zotero notes。
 
 想法类型使用：Seed Question、Experiment Idea、Project Direction、Paper-level Idea、Baseline / Ablation Idea。
 
-如果写入 AI Robotics 想法库，包含：想法标题、类型、来源论文、研究问题、motivation、具体实验设计、需要的系统 / 数据 / 代码、预期结果、可能失败原因、优先级、和当前 Research Lens 的关系。
+如果写入 Zotero idea child note，包含：想法标题、类型、来源论文与精确证据锚点、研究问题、motivation、具体实验设计、需要的系统 / 数据 / 代码、metrics、预期结果、可能失败原因、优先级、和当前 Research Lens 的关系。
 
 ---
 
