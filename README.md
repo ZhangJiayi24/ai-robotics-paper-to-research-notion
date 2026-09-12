@@ -1,44 +1,61 @@
-# AI Robotics Paper to Research Notion
+# AI Robotics Paper to Research
 
-一套给 Codex 使用的 AI Robotics / Embodied AI / Robot Learning 论文精读工作流。它会把论文 PDF、project page、GitHub 与关键视觉证据整理成中文 Research Memo；在用户要求入库时，还会生成按原文章节组织的中文结构化详译，并同步到个人 Notion 研究库。
+一套给 Codex 使用的 AI Robotics / Embodied AI / Robot Learning 论文精读工作流。它会综合论文 PDF、project page、GitHub 与关键视觉证据，生成带图、有研究判断的中文 Research Memo；在用户明确要求入库时，还会追加与原文章节对齐的中文结构化详译，并写入 Notion 或 Zotero。
 
-核心笔记方法来自 `paper2notion-cn-v1.2.0`。这个公开版本只做了可移植化：不包含作者个人 Notion 页面 ID，也不会把内容写进作者的工作区。
+## 选择后端
 
-## 一键安装
+| 后端 | 日常指令 | 入库形式 | 适合场景 |
+| --- | --- | --- | --- |
+| Notion | `paper2notion` | 论文库条目、正文、Ideas、Research Map | 构建可检索、可连接的研究知识库 |
+| Zotero | `paper2zotero` | 论文 parent item、独立 Research Memo PDF、少量 idea child notes | 以文献管理器和 PDF 为中心管理阅读成果 |
 
-前提：已经安装 Codex，并在 Codex 中安装、连接且授权 Notion 插件。
+两个后端共享相同的论文阅读、来源核查、视觉证据、Research Memo 和中文结构化详译标准，只在最终持久化方式上不同。Notion 与 Zotero 是两个独立 skill，可以单独安装，也可以同时安装。
+
+## 安装
+
+前提：已经安装 Codex。默认安装 Notion 版，保持原有安装行为不变。
+
+### Notion
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ZhangJiayi24/ai-robotics-paper-to-research-notion/main/install.sh | bash
 ```
 
-安装器会把 skill 放到 Codex 当前使用的个人 skill 目录：
+### Zotero
 
-```text
-~/.agents/skills/ai-robotics-paper-to-research-notion
+```bash
+curl -fsSL https://raw.githubusercontent.com/ZhangJiayi24/ai-robotics-paper-to-research-notion/main/install.sh | bash -s -- zotero
 ```
 
-它不会读取 Notion，也不会保存 token。重复执行同一条命令即可升级。Codex 通常会自动发现更新；如果 skill 没有出现，重启 Codex。
+### 同时安装
 
-也可以先 clone 再本地安装：
+```bash
+curl -fsSL https://raw.githubusercontent.com/ZhangJiayi24/ai-robotics-paper-to-research-notion/main/install.sh | bash -s -- all
+```
+
+也可以 clone 后本地安装：
 
 ```bash
 git clone https://github.com/ZhangJiayi24/ai-robotics-paper-to-research-notion.git
 cd ai-robotics-paper-to-research-notion
-bash install.sh
+bash install.sh notion   # 或 zotero / all
 ```
+
+skill 默认安装到 `~/.agents/skills`。重复执行相同命令即可升级；如果 Codex 没有发现更新，重启 Codex。
 
 官方说明：[Codex Skills](https://developers.openai.com/codex/skills) · [Codex Plugins](https://developers.openai.com/codex/plugins)
 
-## 第一次使用：复建 Notion 工作区
+## Notion 后端
 
-安装后，在 Codex 中发送：
+前提：在 Codex 中安装、连接并授权 Notion 插件。
+
+首次使用时发送：
 
 ```text
 paper2notion 初始化
 ```
 
-Codex 会在你当前连接的 Notion 工作区中创建或复用：
+Codex 会在当前 Notion 工作区创建或复用：
 
 - `AI Robotics Research Hub`
 - `AI Robotics 论文库`
@@ -46,103 +63,127 @@ Codex 会在你当前连接的 Notion 工作区中创建或复用：
 - `Current Research Lens`
 - `Research Map`
 
-如果已存在同名 Hub，它会优先复用并只补齐缺失组件，不会使用任何写死的页面或数据库 ID。初始化属于 Notion 外部写入，因此只会在你明确发送初始化指令后执行。
-
-## 触发指令：`paper2notion`
-
-日常使用直接输入 `paper2notion` 即可。最短写法：
+初始化属于 Notion 外部写入，只有在用户明确发送初始化指令时才会执行。日常入库使用：
 
 ```text
 paper2notion <PDF / arXiv / project page URL>
 ```
 
-默认含义是：中文精读 → 中文结构化详译 → 写入 Notion。
+完整的 `$ai-robotics-paper-to-research-notion` 是显式调用形式，语义相同。
 
-完整的 `$ai-robotics-paper-to-research-notion` 是显式调用形式；当你想明确指定 skill 时使用，效果相同。
+## Zotero 后端
+
+前提：已经安装 Zotero 桌面端，并在 Codex 中连接一个兼容的 Zotero MCP。推荐使用 [cookjohn/zotero-mcp](https://github.com/cookjohn/zotero-mcp) v1.5.0 或更高版本，以支持读取文库、全文与附件，以及导入本地 PDF。
+
+在 Zotero 中安装并启用插件后，使用插件生成的 client configuration 将 MCP 连接添加到 Codex。不要把端口、连接地址、library ID、storage 路径或 token 提交到仓库。
+
+首次使用时发送：
+
+```text
+paper2zotero 初始化
+```
+
+初始化会检查：
+
+- Zotero library、论文条目和附件是否可读；
+- 原论文 PDF 是否可以读取；
+- 本地生成的 PDF 是否可以导入并回读；
+- WeasyPrint 或 Codex PDF renderer 是否可用；
+- tags、metadata 和 child notes 等可选写入能力。
+
+日常入库使用：
+
+```text
+paper2zotero <PDF / arXiv / project page URL>
+```
+
+完整的 `$ai-robotics-paper-to-research-zotero` 是显式调用形式，语义相同。
+
+Zotero 后端不会把笔记制作成原论文上的 PDF 批注。它会生成一个独立 PDF，内容顺序固定为：
+
+1. 中文 Research Memo；
+2. 中文结构化详译。
+
+该 PDF 通过 Zotero MCP 附加到论文 parent item，不覆盖原论文 PDF 或现有用户内容。只有达到质量标准的 Actionable Ideas 才会创建为 child notes。Zotero 写入只通过 MCP 完成，不直接修改 Zotero SQLite 数据库。
+
+PDF renderer 可选择：
+
+- **WeasyPrint（推荐）**：更适合当前 HTML/CSS 模板，图文、字体、公式、表格和分页通常更稳定；
+- **Codex PDF skill**：无需额外安装 WeasyPrint；
+- **Auto**：优先使用 WeasyPrint，否则回退到 Codex PDF skill。
 
 ## 常用方式
 
-只做中文精读，不写 Notion：
+只精读，不写外部研究库：
 
 ```text
-paper2notion 只精读不入库：<PDF / arXiv / project page URL>
-```
-
-精读、结构化详译并入库：
-
-```text
-paper2notion <PDF / arXiv / project page URL>
+paper2notion 只精读不入库：<论文 URL>
+paper2zotero 只精读不入库：<论文 URL>
 ```
 
 带着自己的研究问题读：
 
 ```text
-paper2notion <论文 URL>
+paper2zotero <论文 URL>
 我关注的问题：这篇工作如何表示 action、是否闭环、wrist camera 是否真正建模了 view correspondence？
-```
-
-首次初始化 Notion 研究库：
-
-```text
-paper2notion 初始化
 ```
 
 查看版本：
 
 ```text
 paper2notion 当前版本
+paper2zotero 当前版本
 ```
 
-## 这套流程会产出什么
+## 共同产出
 
 - 中文 Research Memo：问题、主论点、method story、实验依据、failure、hidden assumptions 与研究连接。
 - 图随文走的视觉证据：优先使用 paper 和 project page 原图，并说明它支持与不能支持的 claim。
 - 中文结构化详译：入库或明确要求翻译时，按论文原文章节覆盖摘要、方法、实验、限制与关键附录。
-- Notion 论文条目：结构化 metadata、阅读优先级、实验价值、一句话结论和可复现点。
-- 少量高质量 Actionable Ideas，以及是否值得更新 Research Map 的判断。
+- 对实验价值、可复现性、失败模式和研究机会的判断。
+- 少量高质量 Actionable Ideas，以及是否值得更新 Research Map 的建议。
 
 ## 仓库结构
 
 ```text
 .
-├── SKILL.md
+├── SKILL.md                         # Notion skill，保留原有入口
 ├── agents/
-│   └── openai.yaml
 ├── references/
-│   ├── chinese-structured-translation.md
-│   ├── notion-paper-records.md
-│   ├── notion-workspace-setup.md
-│   ├── quality-and-completion.md
-│   ├── research-map-and-ideas.md
-│   ├── research-memo-writing.md
-│   └── source-and-visual-evidence.md
-├── install.sh
+├── install.sh                      # notion / zotero / all
+├── zotero/
+│   ├── SKILL.md                    # Zotero skill
+│   ├── agents/
+│   ├── references/
+│   ├── scripts/
+│   └── tests/
 ├── LICENSE
 └── README.md
 ```
 
-`SKILL.md` 只保留触发、模式选择、关键不变量和渐进式路由。来源与视觉证据、Research Memo 写法、Research Map、Notion 字段、详译和完成检查分别在需要时加载；笔记方法和判断标准没有因拆分而删减。
+Notion skill 保持在仓库根目录，以兼容已有安装方式。Zotero skill 是一个自包含的并列目录，保留 Zotero MCP、PDF renderer、独立 PDF 入库和验证逻辑，不改变 Notion 后端的运行行为。
 
 ## 环境覆盖
 
-默认安装到 `~/.agents/skills`。如需安装到另一个 Codex skills 目录：
+如需安装到另一个 Codex skills 目录：
 
 ```bash
-CODEX_SKILLS_DIR=/your/skills/path bash install.sh
+CODEX_SKILLS_DIR=/your/skills/path bash install.sh zotero
 ```
 
-如 fork 了仓库，可在远程安装时覆盖来源：
+如 fork 了仓库，可在远程安装时覆盖来源和分支：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/your-name/your-repo/main/install.sh | \
-  AI_ROBOTICS_SKILL_REPO=your-name/your-repo bash
+  AI_ROBOTICS_SKILL_REPO=your-name/your-repo AI_ROBOTICS_SKILL_REF=main bash -s -- all
 ```
 
 ## 隐私与边界
 
-- 仓库不包含个人 Notion URL、页面 ID、数据库 ID 或访问 token。
-- 普通论文精读不会写入 Notion。
-- Notion 初始化和论文入库只在用户明确要求时执行。
+- 仓库不包含个人 Notion URL、页面 ID、Zotero library ID、item key、本地 storage 路径或访问 token。
+- 普通论文精读不会写入 Notion 或 Zotero。
+- 初始化和论文入库只在用户明确要求时执行。
+- Zotero 后端不会直接读取或修改 Zotero 数据库。
 - 公开发布包含论文原图的笔记前，仍需由发布者确认相应图片与内容的再分发权限。
 
 ## License
